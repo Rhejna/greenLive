@@ -14,7 +14,10 @@ import os
 
 def recommndant_crop(config):
     # loading the model from the saved file
-    pkl_filename = "../models/model_recommandation.pkl"
+    # pkl_filename = "../models/model_recommandation.pkl"
+    ROOT_DIR = os.path.abspath(os.curdir)
+    print(ROOT_DIR)
+    pkl_filename = os.path.join(ROOT_DIR, 'models/model_recommandation.pkl')
     with open(pkl_filename, 'rb') as f_in:
         model = pickle.load(f_in)
 

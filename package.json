@@ -1,0 +1,17 @@
+{
+  "name": "greenlive_dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard for real time obsevabilities for data agriculture , analysis and treatment of data collection",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node script.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "openai": "^4.8.0"
+  }
+}

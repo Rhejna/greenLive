@@ -6,24 +6,23 @@ import numpy as np
 import pickle
 import lightgbm
 import sklearn
+from PIL import Image
 
 import os
 # # !pip install opencv-python
 # import cv2  # You may need to install OpenCV (cv2) if not already installed
 
 
+################ CROP RECOMMANDATION ###########################
 def recommndant_crop(config):
     # loading the model from the saved file
     # pkl_filename = "../models/model_recommandation.pkl"
     ROOT_DIR = os.path.abspath(os.curdir)
     print(ROOT_DIR)
-    pkl_filename = os.path.join(ROOT_DIR, 'models/model_recommandation.pkl')
+    pkl_filename = os.path.join(ROOT_DIR, '../models/model_recommandation.pkl')
     with open(pkl_filename, 'rb') as f_in:
         model = pickle.load(f_in)
 
-    print("2")
-    print(config)
-    print("2")
     result = [[value for value in config.values()]]
     print(result)
 
@@ -37,29 +36,7 @@ def recommndant_crop(config):
     return y_pred
 
 
-# def predict_mpg(config):
-#     # loading the model from the saved file
-#     pkl_filename = "models/model_recommandation.pkl"
-#     with open(pkl_filename, 'rb') as f_in:
-#         model = pickle.load(f_in)
-#
-#     print("2")
-#     print(config)
-#     print("2")
-#     result = [[value for value in config.values()]]
-#     print(result)
-#
-#     # if type(config) == dict:
-#     #     df = pd.DataFrame(config)
-#     # else:
-#     #     df = config
-#
-#     y_pred = model.predict(result)
-#     print(y_pred)
-
-    return y_pred
-
-
+################ DISEASE PREDICTION ###########################
 def predict_disease(config):
     ##loading the model from the saved file
     model = models.load_model("../models/potatoes.h5")
@@ -69,16 +46,35 @@ def predict_disease(config):
     CHANNELS = 3
     EPOCHS = 50
 
+    print(config)
+
     class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 
-    ###################################################################################################################
-    ###################################################################################################################
-    dataset = tf.keras.preprocessing.image.load_img(
-        config,
-        target_size=(IMAGE_SIZE, IMAGE_SIZE)
-    )
+    try:
+        # dataset = tf.keras.preprocessing.image.load_img(
+        #     config,
+        #     target_size=(IMAGE_SIZE, IMAGE_SIZE)
+        # )
 
-    image_array = tf.keras.preprocessing.image.img_to_array(dataset).astype('uint8')
+        # dataset = Image.open(config)  # Use PIL.Image.open to load the image
+        # dataset = dataset.resize((IMAGE_SIZE, IMAGE_SIZE))  # Resize the image
+
+        # Open the image
+        img = Image.open(config)
+
+        # Convert to RGB if it's not already
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+
+        # Resize the image
+        img = img.resize((IMAGE_SIZE, IMAGE_SIZE))
+
+        # Convert to a NumPy array
+        image_array = np.array(img)
+
+        # image_array = tf.keras.preprocessing.image.img_to_array(dataset).astype('uint8')
+    except Exception as e:
+        return f"Error loading image: {str(e)}"
 
     # Make predictions without verbose output
     predictions = model.predict(np.expand_dims(image_array, axis=0), verbose=0)
@@ -90,8 +86,65 @@ def predict_disease(config):
     print(predicted_class_index)
 
     if predicted_class_index == 0 or predicted_class_index == 1:
-        y_pred = f"The plant is sick.\n Predicted class label: {class_names[predicted_class_index]}, (Confidence: {confidence:.2f}%)"
+        y_pred = f"The plant is sick. Predicted class label: {class_names[predicted_class_index]}, (Confidence: {confidence:.2f}%)"
     elif predicted_class_index == 2:
-        y_pred = f"The plant is healthy.\n Predicted class label: {class_names[predicted_class_index]}, (Confidence: {confidence:.2f}%)"
+        y_pred = f"The plant is healthy. Predicted class label: {class_names[predicted_class_index]}, (Confidence: {confidence:.2f}%)"
 
     return y_pred
+
+
+################ FERTILIZER RECOMMANDATION ###########################
+# def recommndant_fertilizer(config):
+#     # loading the model from the saved file
+#     # pkl_filename = "../models/model_recommandation.pkl"
+#     ROOT_DIR = os.path.abspath(os.curdir)
+#     print(ROOT_DIR)
+#     pkl_filename = os.path.join(ROOT_DIR, '../models/model_recommandation.pkl')
+#     with open(pkl_filename, 'rb') as f_in:
+#         model = pickle.load(f_in)
+#
+#     result = [[value for value in config.values()]]
+#     print(result)
+#
+#     # if type(config) == dict:
+#     #     df = pd.DataFrame(config)
+#     # else:
+#     #     df = config
+#
+#     y_pred = model.predict(result)
+#
+#     return y_pred
+
+
+################ WEED PREDICTION ###########################
+def predict_weed(config):
+    ROOT_DIR = os.path.abspath(os.curdir)
+    print(ROOT_DIR)
+    pkl_filename = os.path.join(ROOT_DIR, '../models/model_weed.pkl')
+    with open(pkl_filename, 'rb') as f_in:
+        model = pickle.load(f_in)
+
+    # Image size that we are going to use
+    IMG_SIZE = 128
+
+    # Load an individual plant image
+    image_path = config  # Replace with the path to your image
+    img = image.load_img(image_path, target_size=(IMG_SIZE, IMG_SIZE), interpolation='bilinear')
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+
+    # Preprocess the image
+    img_array = img_array / 255.0  # Normalize
+
+    # Make predictions using the model
+    predictions = model.predict(img_array)
+    confidence_percentage = predictions[0][0] * 100  # Convert to percentage
+
+    # Get the predicted class name
+    predicted_class = "Potato" if confidence_percentage < 50 else "Weed"  # Assuming 50% threshold
+
+    # Display results
+    print(f"Predicted Class: {predicted_class}")
+    print(f"Confidence Percentage: {confidence_percentage:.2f}%")
+
+    return f"Predicted: {predicted_class}, Confidence: {confidence_percentage:.2f}%"

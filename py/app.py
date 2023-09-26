@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 import io
 import tempfile
+import json
 
 
 
@@ -110,15 +111,18 @@ class GetPredictionWeed(Resource):
 
 class GetFertilizerAmount(Resource):
     def get(self):
-        return {"error":"Invalid Method."}
+        return "Gerome : Working endpoint for fertilizer amount... "
     
     def post(self):
         try:
             data = request.get_json()
             if not data:
                 return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
-
-            predict = prediction.fertilizer_amount(data)
+            
+            values = data
+            print(values)
+            predict = prediction.predict_fertilizer_amount(values)
+            print(predict)
             return f'predict : {predict}'
 
         except Exception as error:
@@ -130,6 +134,7 @@ class GetCropRecommandationOutput(Resource):
 
     def post(self):
         try:
+            print("Received")
             data = request.get_json()
             if not data:
                 return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
@@ -143,7 +148,7 @@ class GetCropRecommandationOutput(Resource):
 
 class GetAnswer(Resource):
     def get(self):
-        return {"error":"Invalid Method."}
+        return "Gerome : Working endpoint for AI farmer... "
     
     def post(self):
         try:

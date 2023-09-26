@@ -172,7 +172,7 @@ def predict_fertilizer_amount(data: list[str]):
         fertilizer_model = pickle.load(f_in)
 
     #  make the prediction
-    return fertilizer_model.predict(pd.DataFrame(data["values"]))
+    return fertilizer_model.predict(pd.DataFrame(data, index=[0]))
 
 #  Answer to the question of the user using openai api
 def answer(messages: list[str]):

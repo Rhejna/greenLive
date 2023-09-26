@@ -7,6 +7,12 @@ import pickle
 import lightgbm
 import sklearn
 from PIL import Image
+import pandas as pd
+
+import openai
+# Configure the API_KEY
+openai.api_key = api_key = API_KEY = "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"
+model = "gpt-3.5-turbo"
 
 import os
 # # !pip install opencv-python
@@ -155,3 +161,32 @@ def predict_weed(config):
     print(f"Confidence Percentage: {confidence_percentage:.2f}%")
 
     return f"Predicted: {predicted_class}, Confidence: {confidence_percentage:.2f}%"
+
+# Use fertilizer.pkl model
+def predict_fertilizer_amount(data: list[str]):
+
+    ROOT_DIR = os.path.abspath(os.curdir)
+    pkl_filename = os.path.join(ROOT_DIR, 'models/fertilizer.pkl')
+    #  loading the model from the saved file
+    with open(pkl_filename, 'rb') as f_in:
+        fertilizer_model = pickle.load(f_in)
+
+    #  make the prediction
+    return fertilizer_model.predict(pd.DataFrame(data["values"]))
+
+#  Answer to the question of the user using openai api
+def answer(messages: list[str]):
+
+    # Prompt chatGPT
+    chat = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        temperature=0.9,
+        max_tokens=150,
+    )
+    # Extract the reply
+    reply = chat.choices[0].message.content
+    # print the message
+    reply = reply.replace('. ', '.\n')
+    print(f"Gerome : {reply}\n")
+    return reply

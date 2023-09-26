@@ -5,6 +5,10 @@ docker run -p 5010:38856 greenlive
 
 ssh-keygen -t ed25519 -C "vannrheez@gmail.com"
 
+scp  Archive.zip -i "GreenKey.pem" ec2-user@ec2-15-236-37-65.eu-west-3.compute.amazonaws.com:/home/ec2-user
+
+mysql -h greenlivedb.cz4l01xpdfza.eu-west-3.rds.amazonaws.com -u admin -p
+
 #cd /Users/vianneymfetie/Movies/greenlive_AI/otherThings
 #ssh -i "greenliveKeys.cer" ec2-user@ec2-13-38-218-98.eu-west-3.compute.amazonaws.com
 #scp /Users/vianneymfetie/Movies/greenlive_AI/greenlive.zip ec2-user@ec2-13-38-7-86.eu-west-3.compute.amazonaws.com

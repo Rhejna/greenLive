@@ -19,7 +19,8 @@ def recommndant_crop(config):
     # pkl_filename = "../models/model_recommandation.pkl"
     ROOT_DIR = os.path.abspath(os.curdir)
     print(ROOT_DIR)
-    pkl_filename = os.path.join(ROOT_DIR, '../models/model_recommandation.pkl')
+    pkl_filename = os.path.join(ROOT_DIR, 'models/model_recommandation.pkl')
+    # pkl_filename = os.path.join(ROOT_DIR, '../models/model_recommandation.pkl')
     with open(pkl_filename, 'rb') as f_in:
         model = pickle.load(f_in)
 
@@ -39,7 +40,12 @@ def recommndant_crop(config):
 ################ DISEASE PREDICTION ###########################
 def predict_disease(config):
     ##loading the model from the saved file
-    model = models.load_model("../models/potatoes.h5")
+    ROOT_DIR = os.path.abspath(os.curdir)
+    print(ROOT_DIR)
+    pkl_filename = os.path.join(ROOT_DIR, 'models/potatoes.h5')
+    # pkl_filename = os.path.join(ROOT_DIR, '../models/potatoes.h5')
+
+    model = models.load_model(pkl_filename)
 
     IMAGE_SIZE = 256
     BATCH_SIZE = 32
@@ -120,7 +126,8 @@ def predict_disease(config):
 def predict_weed(config):
     ROOT_DIR = os.path.abspath(os.curdir)
     print(ROOT_DIR)
-    pkl_filename = os.path.join(ROOT_DIR, '../models/model_weed.pkl')
+    pkl_filename = os.path.join(ROOT_DIR, 'models/model_weed.pkl')
+    # pkl_filename = os.path.join(ROOT_DIR, '../models/model_weed.pkl')
     with open(pkl_filename, 'rb') as f_in:
         model = pickle.load(f_in)
 

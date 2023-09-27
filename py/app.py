@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 import io
 import tempfile
+import json
 
 
 
@@ -108,6 +109,24 @@ class GetPredictionWeed(Resource):
         except Exception as error:
             return f'error : {str(error)}', 500  # Return a 500 Internal Server Error status code for exceptions
 
+class GetFertilizerAmount(Resource):
+    def get(self):
+        return "Gerome : Working endpoint for fertilizer amount... "
+    
+    def post(self):
+        try:
+            data = request.get_json()
+            if not data:
+                return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
+            
+            values = data
+            print(values)
+            predict = prediction.predict_fertilizer_amount(values)
+            print(predict)
+            return f'predict : {predict}'
+
+        except Exception as error:
+            return f'error : {str(error)}', 500
 
 class GetCropRecommandationOutput(Resource):
     def get(self):
@@ -115,6 +134,7 @@ class GetCropRecommandationOutput(Resource):
 
     def post(self):
         try:
+            print("Received")
             data = request.get_json()
             if not data:
                 return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
@@ -126,10 +146,28 @@ class GetCropRecommandationOutput(Resource):
             return f'error : {str(error)}', 500  # Return a 500 Internal Server Error status code for exceptions
 
 
+class GetAnswer(Resource):
+    def get(self):
+        return "Gerome : Working endpoint for AI farmer... "
+    
+    def post(self):
+        try:
+            data = request.get_json()
+            if not data:
+                return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
+            predict = prediction.answer(data["messages"])
+            return f'predict : {predict}'
+
+        except Exception as error:
+            return f'error : {str(error)}', 500
+
 api.add_resource(Test,'/')
 api.add_resource(GetCropRecommandationOutput,'/getCropRecommandationOutput')
 api.add_resource(GetPredictionDisease,'/getPredictionDisease')
 api.add_resource(GetPredictionWeed,'/getPredictionWeed')
+
+api.add_resource(GetFertilizerAmount, '/getFertilizerAmount')
+api.add_resource(GetAnswer, '/getAnswer')
 
 @app.errorhandler(Exception)
 def handle_error(e):

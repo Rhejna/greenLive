@@ -1,0 +1,17 @@
+POST http://127.0.0.1:5000/getFertilizerAmount
+Content-Type: application/json
+
+{
+  "pH": 6.8,
+  "Temperature": 28.0,
+  "Humidity": 60,
+  "Moisture": 35,
+  "Soil Type": "sandy loam",
+  "Crop Type": "tomatoes",
+  "Nitrogen": 40,
+  "Potassium": 20,
+  "Phosphorous": 30,
+  "nF": 20.0,
+  "pF": 8.72,
+  "kF": 16.599999999999998
+}

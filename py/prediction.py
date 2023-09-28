@@ -11,7 +11,7 @@ import pandas as pd
 
 import openai
 # Configure the API_KEY
-openai.api_key = api_key = API_KEY = "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"
+openai.api_key = api_key = API_KEY = "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"
 model = "gpt-3.5-turbo"
 
 import os
@@ -63,14 +63,6 @@ def predict_disease(config):
     class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 
     try:
-        # dataset = tf.keras.preprocessing.image.load_img(
-        #     config,
-        #     target_size=(IMAGE_SIZE, IMAGE_SIZE)
-        # )
-
-        # dataset = Image.open(config)  # Use PIL.Image.open to load the image
-        # dataset = dataset.resize((IMAGE_SIZE, IMAGE_SIZE))  # Resize the image
-
         # Open the image
         img = Image.open(config)
 
@@ -105,33 +97,9 @@ def predict_disease(config):
     return y_pred
 
 
-################ FERTILIZER RECOMMANDATION ###########################
-# def recommndant_fertilizer(config):
-#     # loading the model from the saved file
-#     # pkl_filename = "../models/model_recommandation.pkl"
-#     ROOT_DIR = os.path.abspath(os.curdir)
-#     print(ROOT_DIR)
-#     pkl_filename = os.path.join(ROOT_DIR, '../models/model_recommandation.pkl')
-#     with open(pkl_filename, 'rb') as f_in:
-#         model = pickle.load(f_in)
-#
-#     result = [[value for value in config.values()]]
-#     print(result)
-#
-#     # if type(config) == dict:
-#     #     df = pd.DataFrame(config)
-#     # else:
-#     #     df = config
-#
-#     y_pred = model.predict(result)
-#
-#     return y_pred
-
-
 ################ WEED PREDICTION ###########################
 def predict_weed(config):
     ROOT_DIR = os.path.abspath(os.curdir)
-    print(ROOT_DIR)
     pkl_filename = os.path.join(ROOT_DIR, 'models/model_weed.pkl')
     # pkl_filename = os.path.join(ROOT_DIR, '../models/model_weed.pkl')
     with open(pkl_filename, 'rb') as f_in:
@@ -162,7 +130,8 @@ def predict_weed(config):
 
     return f"Predicted: {predicted_class}, Confidence: {confidence_percentage:.2f}%"
 
-# Use fertilizer.pkl model
+
+################ FERTILIZER RECOMMANDATION ###########################
 def predict_fertilizer_amount(data: list[str]):
 
     ROOT_DIR = os.path.abspath(os.curdir)
@@ -171,11 +140,34 @@ def predict_fertilizer_amount(data: list[str]):
     with open(pkl_filename, 'rb') as f_in:
         fertilizer_model = pickle.load(f_in)
 
+    # if type(config) == dict:
+    #     df = pd.DataFrame(config)
+    # else:
+    #     df = config
+
     #  make the prediction
     return fertilizer_model.predict(pd.DataFrame(data, index=[0]))
 
-#  Answer to the question of the user using openai api
-def answer(messages: list[str]):
+
+################ FARMER PERSONAL ASSISTANT ###########################è
+def answer(config):
+    # Personality
+    identity = "Gérome"
+    creators = "AI developpers and experienced farmers from GREENLIVE"
+    mission = f"an experienced AI farmer developped by {creators} and your role is to help farmers to understand the data in their farm"
+    # Context
+    context = {
+        "role": "system",
+        "content": f"Your name is {identity}. You where created by {creators}. You are {mission}."
+    }
+
+    # Provide the context initially
+    messages = [context]
+
+    messages.append({
+        "role": "user",
+        "content": config
+    })
 
     # Prompt chatGPT
     chat = openai.ChatCompletion.create(

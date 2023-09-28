@@ -155,8 +155,9 @@ class GetAnswer(Resource):
             data = request.get_json()
             if not data:
                 return {"error": "Invalid format."}, 400  # Return a 400 Bad Request status code for invalid input
+            print(data["messages"])
             predict = prediction.answer(data["messages"])
-            return f'predict : {predict}'
+            return f'{predict}'
 
         except Exception as error:
             return f'error : {str(error)}', 500

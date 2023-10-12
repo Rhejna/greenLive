@@ -2,7 +2,7 @@
 FROM python:3.10 AS builder
 
 # Add groups of users
-RUN addgroup -S docker && \
+RUN addgroup --system docker && \
     adduser --system --shell /bin/bash --ingroup docker vscode
 
 # Add build dependencies

@@ -23,7 +23,7 @@ RUN addgroup -S docker && \
 
 # Assuming the necessary Docker tools are present in the directory /docker-tools,
 # you can copy them into the image as follows. Adjust the source path as needed.
-COPY --from=/docker-tools / /usr/local/bin/
+# COPY --from=/docker-tools / /usr/local/bin/
 
 # If Docker tools are to be copied from another image, use the following line instead:
-# COPY --from=gloursdocker/docker / /usr/local/bin/
+COPY --from=gloursdocker/docker / /usr/local/bin/

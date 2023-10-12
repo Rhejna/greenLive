@@ -1,6 +1,10 @@
 # syntax=docker/dockerfile:1.4
 FROM python:3.10 AS builder
 
+# Add groups of users
+RUN addgroup -S docker && \
+    adduser --system --shell /bin/bash --ingroup docker vscode
+
 # Add build dependencies
 # RUN apk add --no-cache g++ gfortran build-base openblas openblas-dev
 RUN apt update
@@ -18,9 +22,6 @@ ENTRYPOINT ["python3"]
 CMD ["py/app.py"]
 
 FROM builder as dev-envs
-
-RUN addgroup -S docker && \
-    adduser -S --shell /bin/bash --ingroup docker vscode
 
 # Assuming the necessary Docker tools are present in the directory /docker-tools,
 # you can copy them into the image as follows. Adjust the source path as needed.

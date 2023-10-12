@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1.4
-FROM python:3.10-alpine AS builder
+FROM python:3.10 AS builder
 
 # Add build dependencies
-RUN apk add --no-cache g++ gfortran build-base openblas openblas-dev
+# RUN apk add --no-cache g++ gfortran build-base openblas openblas-dev
+RUN apt update
+RUN apt install git g++ gfortran build-essentials
 
 WORKDIR /app
 
@@ -16,9 +18,6 @@ ENTRYPOINT ["python3"]
 CMD ["py/app.py"]
 
 FROM builder as dev-envs
-
-RUN apk update && \
-    apk add git
 
 RUN addgroup -S docker && \
     adduser -S --shell /bin/bash --ingroup docker vscode

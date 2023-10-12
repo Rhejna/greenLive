@@ -1,13 +1,15 @@
 # syntax=docker/dockerfile:1.4
 FROM python:3.10-alpine AS builder
 
+# Add build dependencies
+RUN apk add --no-cache g++ build-base
+
 WORKDIR /app
 
 COPY requirements.txt /app
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
-
 COPY . /app
 
 ENTRYPOINT ["python3"]

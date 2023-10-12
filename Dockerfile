@@ -4,7 +4,7 @@ FROM python:3.10 AS builder
 # Add build dependencies
 # RUN apk add --no-cache g++ gfortran build-base openblas openblas-dev
 RUN apt update
-RUN apt install git g++ gfortran build-essential
+RUN apt install -y git g++ gfortran build-essential
 
 WORKDIR /app
 

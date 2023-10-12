@@ -2,7 +2,7 @@
 FROM python:3.10-alpine AS builder
 
 # Add build dependencies
-RUN apk add --no-cache g++ build-base
+RUN apk add --no-cache g++ gfortran build-base
 
 WORKDIR /app
 

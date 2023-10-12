@@ -15,9 +15,15 @@ CMD ["py/app.py"]
 
 FROM builder as dev-envs
 
-RUN apk update && apk add git
+RUN apk update && \
+    apk add git
 
-RUN addgroup -S docker && adduser -S --shell /bin/bash --ingroup docker vscode 
+RUN addgroup -S docker && \
+    adduser -S --shell /bin/bash --ingroup docker vscode
 
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
+# Assuming the necessary Docker tools are present in the directory /docker-tools,
+# you can copy them into the image as follows. Adjust the source path as needed.
+COPY --from=/docker-tools / /usr/local/bin/
+
+# If Docker tools are to be copied from another image, use the following line instead:
+# COPY --from=gloursdocker/docker / /usr/local/bin/

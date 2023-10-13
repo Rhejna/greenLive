@@ -176,7 +176,7 @@ class SetOpenAPI(Resource):
             else:
                 return "Failed to update API key"
         except Exception as error:
-            return f'error : {str{error}}', 500
+            return f'error : {str(error)}', 500
 
 api.add_resource(Test,'/')
 api.add_resource(GetCropRecommandationOutput,'/getCropRecommandationOutput')

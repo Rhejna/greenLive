@@ -170,7 +170,7 @@ class SetOpenAPI(Resource):
             data = request.get_json()
             if not data:
                 return {"error": "invalid format."}, 400
-            if data["pass"] = "greenlive":
+            if data["pass"] == "greenlive":
                 prediction.setopenapi(data["key"])
                 return "Updated API key"
             else:

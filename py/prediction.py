@@ -11,13 +11,15 @@ import pandas as pd
 
 import openai
 # Configure the API_KEY
-openai.api_key = api_key = API_KEY = "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"
+# openai.api_key = api_key = API_KEY = None
 model = "gpt-3.5-turbo"
 
 import os
 # # !pip install opencv-python
 # import cv2  # You may need to install OpenCV (cv2) if not already installed
 
+def setopenapi(key):
+    openai.api_key = key
 
 ################ CROP RECOMMANDATION ###########################
 def recommndant_crop(config):

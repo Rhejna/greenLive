@@ -161,10 +161,28 @@ class GetAnswer(Resource):
         except Exception as error:
             return f'error : {str(error)}', 500
 
+class SetOpenAPI(Resource):
+    def get(self):
+        return "Endpoint running"
+
+    def post(self):
+        try:
+            data = request.get_json()
+            if not data:
+                return {"error": "invalid format."), 400
+            if data["pass"] = "greenlive":
+                prediction.setopenapi(data["key"])
+                return "Updated API key"
+            else:
+                return "Failed to update API key"
+        except Exception as error:
+            return f'error : {str{error}}', 500
+
 api.add_resource(Test,'/')
 api.add_resource(GetCropRecommandationOutput,'/getCropRecommandationOutput')
 api.add_resource(GetPredictionDisease,'/getPredictionDisease')
 api.add_resource(GetPredictionWeed,'/getPredictionWeed')
+api.add_resource(SetOpenAPI,'/setopenapi')
 
 api.add_resource(GetFertilizerAmount, '/getFertilizerAmount')
 api.add_resource(GetAnswer, '/getAnswer')

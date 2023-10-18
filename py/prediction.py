@@ -9,9 +9,15 @@ import sklearn
 from PIL import Image
 import pandas as pd
 
+import os
 import openai
 # Configure the API_KEY
 # openai.api_key = api_key = API_KEY = None
+# Load the model if it exists
+if os.path.exists("key.pkl") as key:
+    with open("key.pkl", "rb"):
+        openai.api_key = pickle.load(key)
+# Choose the model
 model = "gpt-3.5-turbo"
 
 import os
@@ -20,6 +26,8 @@ import os
 
 def setopenapi(key):
     openai.api_key = key
+    with open("key.pkl", "wb") as keyfile:
+        pickle.dump(key, keyfile)
 
 ################ CROP RECOMMANDATION ###########################
 def recommndant_crop(config):

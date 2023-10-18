@@ -14,7 +14,7 @@ import openai
 # Configure the API_KEY
 # openai.api_key = api_key = API_KEY = None
 # Load the model if it exists
-if os.path.exists("key.pkl") as key:
+if os.path.exists("key.pkl"):
     with open("key.pkl", "rb"):
         openai.api_key = pickle.load(key)
 # Choose the model
